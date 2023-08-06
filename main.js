@@ -8,7 +8,8 @@ const platformWidth = 5;
 const platformDepth = 5;
 
 const snakeUnit = 0.1;
-const movementSpeed = 0.015;
+// const movementSpeed = 0.015;
+const movementSpeed = 0.05;
 
 var snakeDir = 'right';
 var Score = 0;
@@ -107,12 +108,41 @@ document.addEventListener('keydown', onKeyDown, false);
 
 // Function to get random coordinates from the platform
 function getRandomCoord() {
-    var X = (Math.random() * platformWidth) - platformWidth;
-    var Y = (Math.random() * platformHeight) - platformHeight;
-    var Z = (Math.random() * platformDepth) - platformDepth;
+  cordinateValue = Math.celi(Math.random()*10);
+  if(cordinateValue%4 == 0){
+    var X = (Math.random() * (platformWidth/2)) - (platformWidth/2);
+    var Y = (Math.random() * (platformHeight/2)) - (platformHeight/2);
+    var Z = (Math.random() * (platformDepth/2)) - (platformDepth/2);
+  }
+  if(cordinateValue%4 == 1){
+    var X = -(Math.random() * (platformWidth/2)) - (platformWidth/2);
+    var Y = (Math.random() * (platformHeight/2)) - (platformHeight/2);
+    var Z = (Math.random() * (platformDepth/2)) - (platformDepth/2);
+  }
+  if(cordinateValue%4 == 2){
+    var X = (Math.random() * (platformWidth/2)) - (platformWidth/2);
+    var Y = -(Math.random() * (platformHeight/2)) - (platformHeight/2);
+    var Z = (Math.random() * (platformDepth/2)) - (platformDepth/2);
+  }
+  if(cordinateValue%4 == 3){
+    var X = -(Math.random() * (platformWidth/2)) - (platformWidth/2);
+    var Y = -(Math.random() * (platformHeight/2)) - (platformHeight/2);
+    var Z = (Math.random() * (platformDepth/2)) - (platformDepth/2);
+  }
+
+    var X = (Math.random() * (platformWidth/2)) - (platformWidth/2);
+    var Y = (Math.random() * (platformHeight/2)) - (platformHeight/2);
+    var Z = (Math.random() * (platformDepth/2)) - (platformDepth/2);
     
     return { x: X, y: Y, z: Z };
 };
+// function getRandomCoord() {
+//   var X = -(Math.random() * platformWidth) + 3;
+//   var Y = (Math.random() * platformHeight) / platformHeight;
+//   var Z = (Math.random() * platformDepth) / platformDepth;
+//   console.log(X,Y,Z);
+//   return { x: X, y: Y, z: Z };
+// };
 
 
 // Function to check collision
