@@ -7,12 +7,12 @@ const platformHeight = 0.5;
 const platformWidth = 5;
 const platformDepth = 5;
 
-const snakeUnit = 0.1;
-// const movementSpeed = 0.015;
-const movementSpeed = 0.05;
+const snakeUnit = 0.5; // snake size big 
+const movementSpeed = 0.015;
 
 var snakeDir = 'right';
 var Score = 0;
+var coordinateFood=0 ;
 let font; 
 
 // Creating the renderer
@@ -105,44 +105,33 @@ function onKeyDown(event) {
 
 document.addEventListener('keydown', onKeyDown, false);
 
-
+var coordinateFood=4 ;
 // Function to get random coordinates from the platform
 function getRandomCoord() {
-  cordinateValue = Math.celi(Math.random()*10);
-  if(cordinateValue%4 == 0){
+  var value = (Math.random()*10);
+  var coordinateFood=Math.ceil(value) ;                               // random value generate for different cordinates 
+  if (coordinateFood % 4 == 0){
     var X = (Math.random() * (platformWidth/2)) - (platformWidth/2);
     var Y = (Math.random() * (platformHeight/2)) - (platformHeight/2);
     var Z = (Math.random() * (platformDepth/2)) - (platformDepth/2);
   }
-  if(cordinateValue%4 == 1){
-    var X = -(Math.random() * (platformWidth/2)) - (platformWidth/2);
+  else if (coordinateFood % 4 == 1){
+    var X = -((Math.random() * (platformWidth/2)) - (platformWidth/2));
     var Y = (Math.random() * (platformHeight/2)) - (platformHeight/2);
     var Z = (Math.random() * (platformDepth/2)) - (platformDepth/2);
   }
-  if(cordinateValue%4 == 2){
-    var X = (Math.random() * (platformWidth/2)) - (platformWidth/2);
-    var Y = -(Math.random() * (platformHeight/2)) - (platformHeight/2);
-    var Z = (Math.random() * (platformDepth/2)) - (platformDepth/2);
+  else if (coordinateFood % 4 == 2){
+    var X = (-Math.random() * (platformWidth/2)) + (platformWidth/2);
+    var Y = (-Math.random() * (platformHeight/2)) + (platformHeight/2);
+    var Z = (-Math.random() * (platformDepth/2)) + (platformDepth/2);
   }
-  if(cordinateValue%4 == 3){
-    var X = -(Math.random() * (platformWidth/2)) - (platformWidth/2);
-    var Y = -(Math.random() * (platformHeight/2)) - (platformHeight/2);
-    var Z = (Math.random() * (platformDepth/2)) - (platformDepth/2);
-  }
-
+  else if (coordinateFood % 4 == 3){
     var X = (Math.random() * (platformWidth/2)) - (platformWidth/2);
-    var Y = (Math.random() * (platformHeight/2)) - (platformHeight/2);
-    var Z = (Math.random() * (platformDepth/2)) - (platformDepth/2);
-    
-    return { x: X, y: Y, z: Z };
+    var Y = -(Math.random() * (platformHeight/2)) + (platformHeight/2);
+    var Z = -(Math.random() * (platformDepth/2)) + (platformDepth/2);
+  }
+  return { x: X, y: Y, z: Z };
 };
-// function getRandomCoord() {
-//   var X = -(Math.random() * platformWidth) + 3;
-//   var Y = (Math.random() * platformHeight) / platformHeight;
-//   var Z = (Math.random() * platformDepth) / platformDepth;
-//   console.log(X,Y,Z);
-//   return { x: X, y: Y, z: Z };
-// };
 
 
 // Function to check collision
@@ -204,6 +193,8 @@ function animate() {
 
 
     if(checkCollision(snake, food)){
+
+        
         randomCoord = getRandomCoord(); 
         
         console.log(randomCoord);
