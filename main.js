@@ -178,18 +178,39 @@ function destroyObject(object) {
 function animate() {
     requestAnimationFrame(animate);
  
-    if(snakeDir == 'right'){
+        if(snakeDir == 'right' && previousSnakeDir != 'left'){
         snake.position.x += movementSpeed;
+        previousSnakeDir = 'right';
     }
-    else if(snakeDir == 'left'){
+    else if(previousSnakeDir == 'right' && snakeDir == 'left'){
+        snake.position.x += movementSpeed;
+        previousSnakeDir = 'right';
+    }
+    else if(snakeDir == 'left' && previousSnakeDir != 'right'){
         snake.position.x -= movementSpeed;
+        previousSnakeDir = 'left';
     }
-    else if(snakeDir == 'up'){
+    else if(previousSnakeDir == 'left' && snakeDir == 'right'){
+      snake.position.x -= movementSpeed;
+      previousSnakeDir = 'left';
+    }
+    else if(snakeDir == 'up' && previousSnakeDir != 'down' ){
         snake.position.z -= movementSpeed;
+        previousSnakeDir = 'up';
     }
-    else if(snakeDir == 'down'){
+    else if(previousSnakeDir == 'up' && snakeDir == 'down'){
+        snake.position.z -= movementSpeed;
+        previousSnakeDir = 'up';
+    }
+    else if(snakeDir == 'down' && previousSnakeDir != 'up' ){
         snake.position.z += movementSpeed;
+        previousSnakeDir = 'down';
     }
+    else if(previousSnakeDir == 'down' && snakeDir == 'up'){
+        snake.position.z += movementSpeed;
+        previousSnakeDir = 'down';
+    }
+
 
 
     if(checkCollision(snake, food)){
