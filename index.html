@@ -1,15 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>Snake Remake</title>
-		<style>
-			body { margin: 0; }
-		</style>
-	</head>
-	<body>
-		<script type="module" src="/main.js"></script>
+  <head>
+    <meta charset="utf-8" />
+    <title>Snake Remake</title>
+    <style>
+      @font-face {
+        font-family: "CustomFont";
+        src: url("fonts/nasalization-rg.ttf") format("truetype"); /* Adjust the path */
+      }
 
+      body {
+        margin: 0;
+      }
 
-	</body>
+      #score {
+        font-family: "CustomFont";
+        font-size: 2em;
+        color: white;
+        position: fixed;
+        left: 1vw;
+        top: 1vw;
+        padding: 0.5em 0.5em;
+      }
+
+      #game-over-screen {
+        font-family: "CustomFont";
+        font-size: 2em;
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.8);
+        padding: 1em;
+        border-radius: 10px;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="score"></div>
+    <div id="game-over-screen">
+      <h2>Game Over</h2>
+      <p id="game-over-score"></p>
+    </div>
+
+    <script type="module" src="/main.js"></script>
+  </body>
 </html>
