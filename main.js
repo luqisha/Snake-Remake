@@ -11,6 +11,7 @@ const snakeUnit = 0.5; // snake size big
 const movementSpeed = 0.015;
 
 var snakeDir = 'right';
+var previousSnakeDir  = 'right';   // to store previous movement 
 var Score = 0;
 var coordinateFood=0 ;
 let font; 
@@ -41,6 +42,11 @@ const platform = new THREE.Mesh(platformGeometry, platformMaterial);
 scene.add(platform);
 
 // Creating the snake object
+
+
+
+
+
 const snakeGeometry = new THREE.BoxGeometry(snakeUnit, snakeUnit, snakeUnit);
 const snakeMaterial = new THREE.MeshBasicMaterial({ color: 0x567AFF });
 const snake = new THREE.Mesh(snakeGeometry, snakeMaterial);
@@ -178,7 +184,7 @@ function destroyObject(object) {
 function animate() {
     requestAnimationFrame(animate);
  
-        if(snakeDir == 'right' && previousSnakeDir != 'left'){
+    if(snakeDir == 'right' && previousSnakeDir != 'left'){
         snake.position.x += movementSpeed;
         previousSnakeDir = 'right';
     }
@@ -210,7 +216,6 @@ function animate() {
         snake.position.z += movementSpeed;
         previousSnakeDir = 'down';
     }
-
 
 
     if(checkCollision(snake, food)){
