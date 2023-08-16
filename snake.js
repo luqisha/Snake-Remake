@@ -38,13 +38,12 @@ class Snake {
 
   moveChildren() {
     for (let index = this.children.length - 1; index > 0; index--) {
-      const nextPosition = this.lastPosition[index - 1];
-      this.children[index].position.set(nextPosition[0], this.y, nextPosition[1]);
-      this.lastPosition[index] = [nextPosition[0], nextPosition[1]];
+      const nextPosition = this.lastPosition[index-1];
+      this.children[index-1].position.set(nextPosition[0], this.y, nextPosition[1]);
+      this.lastPosition[index-1] = [nextPosition[0], nextPosition[1]];
     }
-  
     const headPosition = this.head.position.clone();
-    this.lastPosition[0] = [headPosition.x, headPosition.z];
+    this.lastPosition[0] = [headPosition.x,0, headPosition.z];
   }
    
 
@@ -56,9 +55,9 @@ class Snake {
     if (this.growPending > 0) {
       this.growPending--;
       const newSnakeUnit = this.getCube(
-        this.x - this.direction[0] * this.snakeUnitSize,
+        this.x -= this.direction[0] * this.snakeUnitSize,
         this.y,
-        this.z - this.direction[1] * this.snakeUnitSize,
+        this.z -= this.direction[1] * this.snakeUnitSize,
         this.snakeUnitSize,
         this.scene
       );
