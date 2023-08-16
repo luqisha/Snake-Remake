@@ -2,6 +2,9 @@ import * as THREE from 'three';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
+import Snake from './snake.js';
+
+
 
 const scene = new THREE.Scene();
 
@@ -9,10 +12,9 @@ const platformHeight = 0.5;
 const platformWidth = 5;
 const platformDepth = 5;
 
-
 const wallThickness = 0.01; 
 const wallHeight = platformHeight + 0.1;
-const wallColor = 0x00ff00;
+const wallColor = 0x00FF00;
 const wallOpacity = 0.2;
 
 const boundaryLeft = -platformWidth / 2 - wallThickness / 2;
@@ -20,16 +22,16 @@ const boundaryRight = platformWidth / 2 + wallThickness / 2;
 const boundaryTop = platformDepth / 2 + wallThickness / 2;
 const boundaryBottom = -platformDepth / 2 - wallThickness / 2;
 
-
-const snakeUnit = 0.1;
+const snakeUnitSize = 0.1;
 var movementSpeed = 0.015;
 
 var snakeDir = 'right';
 var score = 0;
 var teleport = false;
-let font; 
 
 const scoreObject = document.querySelector('#score');
+
+
 
 // Creating the renderer
 const renderer = new THREE.WebGLRenderer();
@@ -37,6 +39,8 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 renderer.setClearColor(0x000000, 1);
 renderer.clear();
+
+
 
 // Creating the camera
 // THREE.PerspectiveCamera(FOV, viewAspectRatio, zNear, zFar)
@@ -63,10 +67,10 @@ const platform = new THREE.Mesh(platformGeometry, platformMaterial);
 scene.add(platform);
 
 
+
 // Creating the walls around the platform
 // Left wall
 const leftWallMaterial = new THREE.MeshBasicMaterial({ color: wallColor, transparent: true, opacity: wallOpacity });
-
 const leftWallGeometry = new THREE.BoxGeometry(wallThickness, wallHeight, platformDepth);
 const leftWall = new THREE.Mesh(leftWallGeometry, leftWallMaterial);
 leftWall.position.set(-platformWidth / 2 - wallThickness / 2, 0.1, 0);
@@ -95,52 +99,32 @@ scene.add(bottomWall);
 
 
 
-// Creating the snake object
-const snakeGeometry = new THREE.BoxGeometry(snakeUnit, snakeUnit, snakeUnit);
-const snakeMaterial = new THREE.MeshBasicMaterial({ color: 0x567AFF });
-const snake = new THREE.Mesh(snakeGeometry, snakeMaterial);
-snake.position.set(0, platformHeight/2, 0); 
-scene.add(snake);
+// // Creating the snake object
+// const snakeGeometry = new THREE.BoxGeometry(snakeUnitSize, snakeUnitSize, snakeUnitSize);
+// const snakeMaterial = new THREE.MeshBasicMaterial({ color: 0x567AFF });
+// const snake = new THREE.Mesh(snakeGeometry, snakeMaterial);
+// snake.position.set(0, platformHeight/2, 0); 
+// scene.add(snake);
+const snake = new Snake(snakeUnitSize, 0, platformHeight/2, 0, movementSpeed, scene);
+
+
 
 // Creating the food object
-const foodGeometry = new THREE.SphereGeometry(snakeUnit/1.5, 200, 200);
+const foodGeometry = new THREE.SphereGeometry(snakeUnitSize/1.5, 200, 200);
 const foodMaterial = new THREE.MeshBasicMaterial({ color: 0xFF0000 });
 const food = new THREE.Mesh(foodGeometry, foodMaterial);
 
-
 // Getting random coordinates for the food object
 var randomCoord = getRandomCoord();
-console.log(randomCoord);
 var foodX = randomCoord.x;
 var foodZ = randomCoord.z;
-food.position.set(foodX, snake.position.y + snakeUnit/1.5/2, foodZ);
+food.position.set(foodX, platformHeight/2, foodZ);
 scene.add(food);
-
-
-// Creating text object for showing score
-// const fontLoader = new FontLoader();
-// const fontPath = './fonts/Nasalization Rg_Regular.json';
-
-// fontLoader.load(fontPath, (loadedFont) => {
-//   font = loadedFont;
-// });
-
-// var textString = '0';
-// var textGeometry = new TextGeometry(textString, {
-//   font: font,
-//   size: 1, 
-//   height: 0.1,
-//   curveSegments: 10, 
-// });
-// const textMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-// var textMesh = new THREE.Mesh(textGeometry, textMaterial);
-// textMesh.position.set(-5, -5, 0); 
-// textMesh.scale.set(1, 1, 1);
-// scene.add(textMesh);
 
 
 // Rendering the initial scene
 renderer.render(scene, camera);
+
 
 
 // Defining key press events
@@ -160,7 +144,6 @@ function onKeyDown(event) {
       break;
   }
 };
-
 document.addEventListener('keydown', onKeyDown, false);
 
 
@@ -186,6 +169,7 @@ function updateScore(){
 
   }
 }
+
 
 // Function to get random coordinates from the platform
 function getRandomCoord() {
@@ -228,17 +212,17 @@ function destroyObject(object) {
 };
 
 
-
 function resetWallColor(){
   score -= 1;
   setTimeout(() => {
-    leftWall.material.color.set(0x00ff00);
-    rightWall.material.color.set(0x00ff00);
-    topWall.material.color.set(0x00ff00);
-    bottomWall.material.color.set(0x00ff00);
+    leftWall.material.color.set(0x00FF00);
+    rightWall.material.color.set(0x00FF00);
+    topWall.material.color.set(0x00FF00);
+    bottomWall.material.color.set(0x00FF00);
   }, 1000);
   
 }
+
 
 function GameOver(score) {
   cancelAnimationFrame(animate);
@@ -258,49 +242,59 @@ function GameOver(score) {
 }
   
 
+
 // Rendering the scene continuously
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
   updateScore();
 
+  snake.move()
+  // console.log(snake.children.length)
+  
+
   if(teleport == true){
     resetWallColor();
   }
 
+
   if(snakeDir == 'right'){
-    snake.position.x += movementSpeed;
+    // snake.head.position.x += movementSpeed;
+    if (snake.direction[0]==0) snake.direction = [1, 0]
   }
   else if(snakeDir == 'left'){
-    snake.position.x -= movementSpeed;
+    // snake.head.position.x -= movementSpeed;
+    if (snake.direction[0]==0) snake.direction = [-1, 0]
   }
   else if(snakeDir == 'up'){
-    snake.position.z -= movementSpeed;
+    // snake.head.position.z -= movementSpeed;
+    if (snake.direction[1]==0) snake.direction = [0, -1]
   }
   else if(snakeDir == 'down'){
-    snake.position.z += movementSpeed;
+    // snake.head.position.z += movementSpeed;
+    if (snake.direction[1]==0) snake.direction = [0, 1]
   }
 
 
-  if (checkCollision(snake, leftWall)) {
+  if (checkCollision(snake.head, leftWall)) {
     teleport = true;
-    leftWall.material.color.set(0xff0000);  
-    snake.position.x = boundaryRight - snakeUnit / 2;
+    leftWall.material.color.set(0xFF0000);  
+    snake.head.position.x = boundaryRight - snakeUnitSize / 2;
   } 
-  else if (checkCollision(snake, rightWall)) {
+  else if (checkCollision(snake.head, rightWall)) {
     teleport = true;
-    rightWall.material.color.set(0xff0000);
-    snake.position.x = boundaryLeft + snakeUnit / 2;
+    rightWall.material.color.set(0xFF0000);
+    snake.head.position.x = boundaryLeft + snakeUnitSize / 2;
   } 
-  else if (checkCollision(snake, topWall)) {
+  else if (checkCollision(snake.head, topWall)) {
     teleport = true;
-    topWall.material.color.set(0xff0000);
-    snake.position.z = boundaryBottom + snakeUnit / 2;
+    topWall.material.color.set(0xFF0000);
+    snake.head.position.z = boundaryBottom + snakeUnitSize / 2;
   } 
-  else if (checkCollision(snake, bottomWall)) {
+  else if (checkCollision(snake.head, bottomWall)) {
     teleport = true;
-    topWall.material.color.set(0xff0000);
-    snake.position.z = boundaryTop - snakeUnit / 2;
+    topWall.material.color.set(0xFF0000);
+    snake.head.position.z = boundaryTop - snakeUnitSize / 2;
   }
   else
   {
@@ -308,16 +302,15 @@ function animate() {
   }
     
 
-  if(checkCollision(snake, food)){
+  if(checkCollision(snake.head, food)){
       randomCoord = getRandomCoord(); 
-      
-      console.log(randomCoord);
       foodX = randomCoord.x;
       foodZ = randomCoord.z;
-      food.position.set(foodX, snake.position.y, foodZ);
-      score += 1;    
+      food.position.set(foodX, platformHeight/2, foodZ);
+
+      score += 1;  
+      snake.grow();  
   }
-  
   
   renderer.render(scene, camera);
 };
