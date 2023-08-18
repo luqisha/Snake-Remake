@@ -37,7 +37,7 @@ class Snake {
   }
 
   moveChildren() {
-    for (let index = this.children.length - 1; index > 0; index--) {
+    for (let index = this.children.length ; index > 0; index--) {
       const nextPosition = this.lastPosition[index-1];
       this.children[index-1].position.set(nextPosition[0], this.y, nextPosition[1]);
       this.lastPosition[index-1] = [nextPosition[0], nextPosition[1]];
@@ -66,6 +66,7 @@ class Snake {
     } else if (this.lastPosition.length > this.children.length + 2) {
       this.lastPosition.shift();
     }
+    this.lastPosition.shift();
 
     this.head.position.set(this.x, this.y, this.z);
     this.moveChildren();

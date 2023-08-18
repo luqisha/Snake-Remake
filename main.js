@@ -150,6 +150,7 @@ document.addEventListener('keydown', onKeyDown, false);
 function updateScore(){
   if(score < 0){
     scoreObject.style.display = 'none';
+    // score = 0 ;
     GameOver(score);
   }
   else
@@ -232,7 +233,7 @@ function GameOver(score) {
   const gameOverScore = document.getElementById('game-over-score');
 
   if(score < 0){
-    gameOverScore.textContent = `Score: 😭`;
+    gameOverScore.textContent = `Score:${score} 😭`;
   }
   else
   {
