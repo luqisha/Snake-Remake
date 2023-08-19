@@ -27,6 +27,7 @@ class Snake {
   }
 
   getCube(x, y, z, snakeUnitSize, scene) {
+   
     const snakeGeometry = new THREE.BoxGeometry(snakeUnitSize, snakeUnitSize, snakeUnitSize);
     const snakeMaterial = new THREE.MeshBasicMaterial({ color: 0x567AFF});
     const snakeUnit = new THREE.Mesh(snakeGeometry, snakeMaterial);

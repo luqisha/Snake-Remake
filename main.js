@@ -3,6 +3,12 @@ import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import Snake from './snake.js';
+// import one from './images/1.png';
+// import two from './images/2.png';
+// import three from './images/3.png';
+// import four from './images/4.png';
+// import five from './images/5.png';
+// import six from './images/6.png';
 
 
 
@@ -110,9 +116,35 @@ const snake = new Snake(snakeUnitSize, 0, platformHeight/2, 0, movementSpeed, sc
 
 
 // Creating the food object
-const foodGeometry = new THREE.SphereGeometry(snakeUnitSize/1.5, 200, 200);
-const foodMaterial = new THREE.MeshBasicMaterial({ color: 0xFF0000 });
+// const foodGeometry = new THREE.SphereGeometry(snakeUnitSize/1.5, 200, 200);
+// const foodMaterial = new THREE.MeshBasicMaterial({ color: 0xFF0000 });
+// const food = new THREE.Mesh(foodGeometry, foodMaterial);
+
+
+const textureLoader = new THREE.TextureLoader();
+const foodGeometry = new THREE.BoxGeometry(0.1,0.2,0.1);
+const foodMaterial =[
+  new THREE.MeshBasicMaterial({ map: textureLoader.load('./images/sideView.png') }),
+  new THREE.MeshBasicMaterial({ map: textureLoader.load('./images/sideView.png') }),
+  new THREE.MeshBasicMaterial({ map: textureLoader.load('./images/topView.jpg') }),
+  new THREE.MeshBasicMaterial({ map: textureLoader.load('./images/sideView.png') }),
+  new THREE.MeshBasicMaterial({ map: textureLoader.load('./images/sideView.png') }),
+  new THREE.MeshBasicMaterial({ map: textureLoader.load('./images/sideView.png') })
+];
 const food = new THREE.Mesh(foodGeometry, foodMaterial);
+
+
+// const foodGeometry = new THREE.BoxGeometry(snakeUnitSize/1.5, 200, 200);
+// const foodMaterial = [
+//     new THREE.MeshStandardMaterial({ map: textureLoader.load('./images/1.png') }),
+//     new THREE.MeshStandardMaterial({ map: textureLoader.load('./images/2.png') }),
+//     new THREE.MeshStandardMaterial({ map: textureLoader.load('./images/3.png') }),
+//     new THREE.MeshStandardMaterial({ map: textureLoader.load('./images/4.png') }),
+//     new THREE.MeshStandardMaterial({ map: textureLoader.load('./images/5.png') }),
+//     new THREE.MeshStandardMaterial({ map: textureLoader.load('./images/6.png') })
+// ];
+// const food = new THREE.Mesh(foodGeometry, foodMaterial);
+
 
 // Getting random coordinates for the food object
 var randomCoord = getRandomCoord();
